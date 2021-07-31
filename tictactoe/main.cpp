@@ -32,7 +32,7 @@ void printHelp() {
     << std::endl;
 }
 
-void playMove(std::array<std::uint8_t,9> &arr, bool &turn) {
+void playMove(std::array<std::uint8_t,9> &arr, bool &turn, bool isAi) {
     std::string s; std::cin >> s;
     try {
         int a = std::stoi(s);
@@ -43,7 +43,9 @@ void playMove(std::array<std::uint8_t,9> &arr, bool &turn) {
                 arr[a-1] = Player::white;
             }
             std::cout << "\tmove registered" << std::endl;
-            turn = !turn;
+            if (!isAi) {
+                turn = !turn;
+            }
         } else {
             throw std::exception();
         }
@@ -77,8 +79,6 @@ void playMoveAi(std::array<std::uint8_t,9> &arr, bool turn) {
             }
         }
     }
-    printBoard(arr);
-    printBoard(moves[index]);
     arr = moves[index];
     std::cout << "\tThe AI played " << std::endl;
 }
@@ -105,7 +105,7 @@ void playLocal() {
             }
         }
         else if (n=="play") {
-            playMove(arr, turn);
+            playMove(arr, turn, false);
         }
         else if (n=="show") {
             printBoard(arr);
@@ -161,7 +161,7 @@ void playAi() {
             }
         }
         else if (n=="play") {
-            playMove(arr, turn);
+            playMove(arr, turn, true);
             turn=!turn;
             playMoveAi(arr, !turn);
         }
